@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Philantrac – View Balances</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://connect-js.stripe.com/v1.0/connect.js" async></script>
+    <!-- Import Roboto font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 30px;
+        color: #888888;
+      }
+
+      #container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+
+      #loading {
+        text-align: center;
+        font-size: 18px;
+        padding: 40px;
+        color: #888888;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="loading">Loading balance component...</div>
+    </div>
+
+    <script>
+      window.StripeConnect = window.StripeConnect || {};
+
+      StripeConnect.onLoad = async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const clientSecret = urlParams.get("secret");
+        const publishableKey = "pk_test_51QpxmvLuSJ6SZh9b6mW4vZTkGaMvBLzJvZUGcm9w8AjsjWb6eppnxguqxn8foeziwTpz0DdzOnnFWo6rRJ396HWR00HLjnhIQO"; // Replace with yours
+
+        if (!clientSecret) {
+          document.getElementById("loading").innerText = "Missing client secret.";
+          return;
+        }
+
+        try {
+          const stripeConnectInstance = StripeConnect.init({
+            publishableKey,
+            fetchClientSecret: () => Promise.resolve(clientSecret),
+            appearance: {
+              variables: {
+                colorPrimary: "#186d40", // ✅ Philantrac green
+                colorText: "#888888",    // ✅ Gray text
+                borderRadius: "8px",
+                fontFamily: "Roboto, sans-serif",
+              },
+              rules: {
+                ".Tab, .Button, .Link": {
+                  color: "#186d40",
+                },
+                ".Button--primary": {
+                  backgroundColor: "#186d40",
+                  color: "#ffffff",
+                },
+                ".Input": {
+                  borderColor: "#186d40",
+                  color: "#888888",
+                }
+              }
+            }
+          });
+
+          const balances = stripeConnectInstance.create("balances");
+
+          balances.setOnLoaderStart((event) => {
+            document.getElementById("loading").style.display = "none";
+            console.log(`${event.elementTagName} is now visible`);
+          });
+
+          document.getElementById("container").appendChild(balances);
+        } catch (error) {
+          console.error("Failed to load balances:", error);
+          document.getElementById("loading").innerText = "⚠️ Failed to load balances.";
+        }
+      };
+    </script>
+  </body>
+</html>
