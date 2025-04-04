@@ -5,15 +5,16 @@
     <title>Philantrac – View Balances</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://connect-js.stripe.com/v1.0/connect.js" async></script>
-    <!-- Import Roboto font -->
+    <!-- Roboto Font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
     <style>
       body {
         font-family: 'Roboto', sans-serif;
-        background-color: #f4f4f4;
         margin: 0;
         padding: 30px;
+        background-color: #f4f4f4; /* Light default */
         color: #888888;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       #container {
@@ -23,16 +24,34 @@
         background: white;
         border-radius: 12px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       #loading {
         text-align: center;
         font-size: 18px;
         padding: 40px;
-        color: #888888;
+      }
+
+      /* Dark mode support */
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #121212;
+          color: #cccccc;
+        }
+
+        #container {
+          background: #1e1e1e;
+          box-shadow: 0 0 10px rgba(255,255,255,0.1);
+        }
+
+        #loading {
+          color: #cccccc;
+        }
       }
     </style>
   </head>
+
   <body>
     <div id="container">
       <div id="loading">Loading balance component...</div>
@@ -51,45 +70,43 @@
           return;
         }
 
-        try {
-          const stripeConnectInstance = StripeConnect.init({
-            publishableKey,
-            fetchClientSecret: () => Promise.resolve(clientSecret),
-            appearance: {
-              variables: {
-                colorPrimary: "#186d40", // ✅ Philantrac green
-                colorText: "#888888",    // ✅ Gray text
-                borderRadius: "8px",
-                fontFamily: "Roboto, sans-serif",
+        // ✅ Detect system theme BEFORE init
+        const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        const stripeConnectInstance = StripeConnect.init({
+          publishableKey,
+          fetchClientSecret: () => Promise.resolve(clientSecret),
+          appearance: {
+            variables: {
+              colorPrimary: "#117946", // Philantrac Green
+              colorText: isDarkMode ? "#cccccc" : "#888888", // Light text or dark text
+              borderRadius: "8px",
+              fontFamily: "Roboto, sans-serif",
+            },
+            rules: {
+              ".Tab, .Button, .Link": {
+                color: "#117946", 
               },
-              rules: {
-                ".Tab, .Button, .Link": {
-                  color: "#186d40",
-                },
-                ".Button--primary": {
-                  backgroundColor: "#186d40",
-                  color: "#ffffff",
-                },
-                ".Input": {
-                  borderColor: "#186d40",
-                  color: "#888888",
-                }
+              ".Button--primary": {
+                backgroundColor: "#117946",
+                color: "#ffffff",
+              },
+              ".Input": {
+                borderColor: "#117946",
+                color: isDarkMode ? "#cccccc" : "#888888",
               }
             }
-          });
+          }
+        });
 
-          const balances = stripeConnectInstance.create("balances");
+        const balances = stripeConnectInstance.create("balances");
 
-          balances.setOnLoaderStart((event) => {
-            document.getElementById("loading").style.display = "none";
-            console.log(`${event.elementTagName} is now visible`);
-          });
+        balances.setOnLoaderStart(() => {
+          document.getElementById("loading").style.display = "none";
+          console.log(`${event.elementTagName} is now visible`);
+        });
 
-          document.getElementById("container").appendChild(balances);
-        } catch (error) {
-          console.error("Failed to load balances:", error);
-          document.getElementById("loading").innerText = "⚠️ Failed to load balances.";
-        }
+        document.getElementById("container").appendChild(balances);
       };
     </script>
   </body>
