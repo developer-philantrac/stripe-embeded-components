@@ -1,19 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Philantrac – View Balances</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://connect-js.stripe.com/v1.0/connect.js" async></script>
-    <!-- Roboto Font -->
+    <!-- Import Roboto font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
     <style>
+      :root {
+        /* Light Mode Colors */
+        --primary: #186d40;
+        --secondary: #ff8c2e;
+        --primary-text: #222222;
+        --secondary-text: #888888;
+        --primary-bg: #fafafa;
+        --secondary-bg: #ffffff;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          /* Dark Mode Colors */
+          --primary: #186d40;
+          --secondary: #ff8c2e;
+          --primary-text: #ffffff;
+          --secondary-text: #95a1ac;
+          --primary-bg: #1d2428;
+          --secondary-bg: #14181b;
+        }
+      }
+
       body {
         font-family: 'Roboto', sans-serif;
         margin: 0;
         padding: 30px;
-        background-color: #f4f4f4; /* Light default */
-        color: #888888;
+        background-color: var(--primary-bg);
+        color: var(--secondary-text);
         transition: background-color 0.3s ease, color 0.3s ease;
       }
 
@@ -21,7 +43,7 @@
         max-width: 600px;
         margin: auto;
         padding: 20px;
-        background: white;
+        background: var(--secondary-bg);
         border-radius: 12px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
         transition: background-color 0.3s ease, color 0.3s ease;
@@ -31,23 +53,6 @@
         text-align: center;
         font-size: 18px;
         padding: 40px;
-      }
-
-      /* Dark mode support */
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #121212;
-          color: #cccccc;
-        }
-
-        #container {
-          background: #1e1e1e;
-          box-shadow: 0 0 10px rgba(255,255,255,0.1);
-        }
-
-        #loading {
-          color: #cccccc;
-        }
       }
     </style>
   </head>
@@ -62,15 +67,15 @@
 
       StripeConnect.onLoad = async () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const clientSecret = urlParams.get("secret");
-        const publishableKey = "pk_test_51QpxmvLuSJ6SZh9b6mW4vZTkGaMvBLzJvZUGcm9w8AjsjWb6eppnxguqxn8foeziwTpz0DdzOnnFWo6rRJ396HWR00HLjnhIQO"; // Replace with yours
+        const clientSecret = "accs_secret__S4R8cHlqwWnuzmIxbZim1a0ASOlHG28IhLrzr8LhnBqRfi9";
+        const publishableKey = "pk_test_51QpxmvLuSJ6SZh9b6mW4vZTkGaMvBLzJvZUGcm9w8AjsjWb6eppnxguqxn8foeziwTpz0DdzOnnFWo6rRJ396HWR00HLjnhIQO"; // Replace with your key
 
         if (!clientSecret) {
           document.getElementById("loading").innerText = "Missing client secret.";
           return;
         }
 
-        // ✅ Detect system theme BEFORE init
+        // Detect system theme before initializing Stripe
         const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         const stripeConnectInstance = StripeConnect.init({
@@ -78,22 +83,22 @@
           fetchClientSecret: () => Promise.resolve(clientSecret),
           appearance: {
             variables: {
-              colorPrimary: "#117946", // Philantrac Green
-              colorText: isDarkMode ? "#cccccc" : "#888888", // Light text or dark text
+              colorPrimary: "#186d40", // Brand Primary
+              colorText: isDarkMode ? "#95a1ac" : "#888888", // Secondary Text
               borderRadius: "8px",
               fontFamily: "Roboto, sans-serif",
             },
             rules: {
               ".Tab, .Button, .Link": {
-                color: "#117946", 
+                color: "#186d40", // Primary brand green
               },
               ".Button--primary": {
-                backgroundColor: "#117946",
+                backgroundColor: "#186d40",
                 color: "#ffffff",
               },
               ".Input": {
-                borderColor: "#117946",
-                color: isDarkMode ? "#cccccc" : "#888888",
+                borderColor: "#186d40",
+                color: isDarkMode ? "#95a1ac" : "#888888",
               }
             }
           }
