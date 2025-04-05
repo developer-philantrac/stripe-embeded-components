@@ -67,7 +67,7 @@
 
       StripeConnect.onLoad = async () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const clientSecret = "accs_secret__S4R8cHlqwWnuzmIxbZim1a0ASOlHG28IhLrzr8LhnBqRfi9";
+        const clientSecret = urlParams.get("secret");
         const publishableKey = "pk_test_51QpxmvLuSJ6SZh9b6mW4vZTkGaMvBLzJvZUGcm9w8AjsjWb6eppnxguqxn8foeziwTpz0DdzOnnFWo6rRJ396HWR00HLjnhIQO"; // Replace with your key
 
         if (!clientSecret) {
