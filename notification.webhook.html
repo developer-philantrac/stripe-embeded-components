@@ -85,7 +85,7 @@
         }
 
         // 👇 Set your webhook URL here
-        const webhookURL = "https://x8ki-letl-twmt.n7.xano.io/api:msaIOP6L/Stripe_Notification_Detection_Webhook"; // TODO: Replace with your webhook URL
+        const webhookURL = "https://your-webhook-url.com/notification"; // TODO: Replace with your webhook URL
 
         const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -134,7 +134,7 @@
             } else {
               warning.style.display = "block";
               warning.textContent = "🎉 No notifications at this time!";
-              // No webhook needed if nothing
+              // No webhook needed if everything is clean
             }
           });
 
@@ -150,12 +150,6 @@
               return;
             }
 
-            const notificationsList = (response.notifications || []).map(noti => ({
-              code: noti.code || "unknown",
-              message: noti.message || "No message",
-              action_required: noti.actionRequired || false,
-            }));
-
             fetch(webhookURL, {
               method: "POST",
               headers: {
@@ -166,7 +160,6 @@
                 total_notifications: response.total,
                 action_required: response.actionRequired,
                 account_id: accountId,
-                notifications: notificationsList,
               }),
             }).then(res => {
               console.log("Webhook sent, status:", res.status);
