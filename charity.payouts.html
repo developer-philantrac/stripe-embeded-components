@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Philantrac – Payouts</title>
@@ -8,31 +8,55 @@
     <!-- Roboto font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
     <style>
+      :root {
+        /* Light Mode Colors */
+        --primary: #186d40;
+        --secondary: #ff8c2e;
+        --primary-text: #222222;
+        --secondary-text: #888888;
+        --primary-bg: #fafafa;
+        --secondary-bg: #ffffff;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          /* Dark Mode Colors */
+          --primary: #186d40;
+          --secondary: #ff8c2e;
+          --primary-text: #ffffff;
+          --secondary-text: #95a1ac;
+          --primary-bg: #1d2428;
+          --secondary-bg: #14181b;
+        }
+      }
+
       body {
         font-family: 'Roboto', sans-serif;
-        background-color: #f4f4f4;
         margin: 0;
         padding: 30px;
-        color: #888888;
+        background-color: var(--primary-bg);
+        color: var(--secondary-text);
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       #container {
         max-width: 600px;
         margin: auto;
         padding: 20px;
-        background: white;
+        background: var(--secondary-bg);
         border-radius: 12px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       #loading {
         text-align: center;
         font-size: 18px;
         padding: 40px;
-        color: #888888;
       }
     </style>
   </head>
+
   <body>
     <div id="container">
       <div id="loading">Loading payouts component...</div>
@@ -44,12 +68,15 @@
       StripeConnect.onLoad = async () => {
         const urlParams = new URLSearchParams(window.location.search);
         const clientSecret = urlParams.get("secret");
-        const publishableKey = "pk_test_51QpxmvLuSJ6SZh9b6mW4vZTkGaMvBLzJvZUGcm9w8AjsjWb6eppnxguqxn8foeziwTpz0DdzOnnFWo6rRJ396HWR00HLjnhIQO"; // Replace this
+        const publishableKey = "pk_test_51QpxmvLuSJ6SZh9b6mW4vZTkGaMvBLzJvZUGcm9w8AjsjWb6eppnxguqxn8foeziwTpz0DdzOnnFWo6rRJ396HWR00HLjnhIQO"; // Replace with yours
 
         if (!clientSecret) {
           document.getElementById("loading").innerText = "Missing client secret.";
           return;
         }
+
+        // Detect if system is dark mode
+        const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         try {
           const stripeConnectInstance = StripeConnect.init({
@@ -57,14 +84,14 @@
             fetchClientSecret: () => Promise.resolve(clientSecret),
             appearance: {
               variables: {
-                colorPrimary: "#186d40",
-                colorText: "#888888",
+                colorPrimary: "#186d40", // Philantrac Primary Green
+                colorText: isDarkMode ? "#95a1ac" : "#888888", // Text adjusts based on mode
                 borderRadius: "8px",
                 fontFamily: "Roboto, sans-serif",
               },
               rules: {
                 ".Tab, .Button, .Link": {
-                  color: "#186d40",
+                  color: "#186d40", // Primary Brand
                 },
                 ".Button--primary": {
                   backgroundColor: "#186d40",
@@ -72,7 +99,7 @@
                 },
                 ".Input": {
                   borderColor: "#186d40",
-                  color: "#888888",
+                  color: isDarkMode ? "#95a1ac" : "#888888",
                 }
               }
             }
@@ -80,7 +107,7 @@
 
           const payouts = stripeConnectInstance.create("payouts");
 
-          payouts.setOnLoaderStart((event) => {
+          payouts.setOnLoaderStart(() => {
             document.getElementById("loading").style.display = "none";
             console.log(`${event.elementTagName} is now visible`);
           });
