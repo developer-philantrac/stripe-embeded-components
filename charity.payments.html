@@ -33,14 +33,16 @@
       body {
         font-family: 'Roboto', sans-serif;
         margin: 0;
-        padding: 30px;
+        padding: 20px;
         background-color: var(--primary-bg);
         color: var(--secondary-text);
         transition: background-color 0.3s ease, color 0.3s ease;
+        overflow-x: hidden; /* 👈 Prevent horizontal scroll */
       }
 
       #container {
         max-width: 600px;
+        width: 90%; /* 👈 Make width responsive */
         margin: auto;
         padding: 20px;
         background: var(--secondary-bg);
@@ -51,8 +53,20 @@
 
       #loading {
         text-align: center;
-        font-size: 18px;
+        font-size: 5vw; /* 👈 Responsive font size */
         padding: 40px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      /* Special case: Extra small devices like phones */
+      @media (max-width: 480px) {
+        #loading {
+          font-size: 18px; /* Fixed smaller font for tiny phones */
+        }
+        #container {
+          padding: 15px;
+        }
       }
     </style>
   </head>
@@ -91,7 +105,7 @@
               },
               rules: {
                 ".Tab, .Button, .Link": {
-                  color: "#186d40", // Primary color
+                  color: "#186d40",
                 },
                 ".Button--primary": {
                   backgroundColor: "#186d40",
