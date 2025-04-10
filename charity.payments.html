@@ -7,6 +7,7 @@
     <script src="https://connect-js.stripe.com/v1.0/connect.js" async></script>
     <!-- Roboto font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+    
     <style>
       :root {
         /* Light Mode Colors */
@@ -37,12 +38,12 @@
         background-color: var(--primary-bg);
         color: var(--secondary-text);
         transition: background-color 0.3s ease, color 0.3s ease;
-        overflow-x: hidden; /* 👈 Prevent horizontal scroll */
+        overflow-x: hidden; /* 🚫 Prevent sideways scroll */
       }
 
       #container {
         max-width: 600px;
-        width: 90%; /* 👈 Make width responsive */
+        width: 90%; /* 👈 Responsive width */
         margin: auto;
         padding: 20px;
         background: var(--secondary-bg);
@@ -51,18 +52,25 @@
         transition: background-color 0.3s ease, color 0.3s ease;
       }
 
+      /* 🛡️ Fix Stripe Connect components expanding */
+      #container > div {
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
       #loading {
         text-align: center;
-        font-size: 5vw; /* 👈 Responsive font size */
+        font-size: 5vw; /* 👈 Responsive text size */
         padding: 40px;
         word-wrap: break-word;
         overflow-wrap: break-word;
       }
 
-      /* Special case: Extra small devices like phones */
+      /* 📱 Small devices fix */
       @media (max-width: 480px) {
         #loading {
-          font-size: 18px; /* Fixed smaller font for tiny phones */
+          font-size: 18px; /* 👈 Fixed size for very small phones */
         }
         #container {
           padding: 15px;
@@ -89,7 +97,6 @@
           return;
         }
 
-        // Detect dark mode
         const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         try {
@@ -98,8 +105,8 @@
             fetchClientSecret: () => Promise.resolve(clientSecret),
             appearance: {
               variables: {
-                colorPrimary: "#186d40", // Primary Green
-                colorText: isDarkMode ? "#95a1ac" : "#888888", // Text adjusts for mode
+                colorPrimary: "#186d40",
+                colorText: isDarkMode ? "#95a1ac" : "#888888",
                 borderRadius: "8px",
                 fontFamily: "Roboto, sans-serif",
               },
