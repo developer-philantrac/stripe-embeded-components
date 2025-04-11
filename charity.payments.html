@@ -1,144 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Philantrac – Payments</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://connect-js.stripe.com/v1.0/connect.js" async></script>
-    <!-- Roboto font -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
-    
-    <style>
-      :root {
-        /* Light Mode Colors */
-        --primary: #186d40;
-        --secondary: #ff8c2e;
-        --primary-text: #222222;
-        --secondary-text: #888888;
-        --primary-bg: #fafafa;
-        --secondary-bg: #ffffff;
-      }
+<style>
+  :root {
+    /* Light Mode Colors */
+    --primary: #186d40;
+    --secondary: #ff8c2e;
+    --primary-text: #222222;
+    --secondary-text: #888888;
+    --primary-bg: #fafafa;
+    --secondary-bg: #ffffff;
+  }
 
-      @media (prefers-color-scheme: dark) {
-        :root {
-          /* Dark Mode Colors */
-          --primary: #186d40;
-          --secondary: #ff8c2e;
-          --primary-text: #ffffff;
-          --secondary-text: #95a1ac;
-          --primary-bg: #1d2428;
-          --secondary-bg: #14181b;
-        }
-      }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      /* Dark Mode Colors */
+      --primary: #186d40;
+      --secondary: #ff8c2e;
+      --primary-text: #ffffff;
+      --secondary-text: #95a1ac;
+      --primary-bg: #1d2428;
+      --secondary-bg: #14181b;
+    }
+  }
 
-      body {
-        font-family: 'Roboto', sans-serif;
-        margin: 0;
-        padding: 20px;
-        background-color: var(--primary-bg);
-        color: var(--secondary-text);
-        transition: background-color 0.3s ease, color 0.3s ease;
-        overflow-x: hidden; /* 🚫 Prevent sideways scroll */
-      }
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--primary-bg);
+    color: var(--secondary-text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+  }
 
-      #container {
-        max-width: 600px;
-        width: 90%; /* 👈 Responsive width */
-        margin: auto;
-        padding: 20px;
-        background: var(--secondary-bg);
-        border-radius: 12px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease, color 0.3s ease;
-      }
+  #container {
+    max-width: 600px;
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+    background: var(--secondary-bg);
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 
-      /* 🛡️ Fix Stripe Connect components expanding */
-      #container > div {
-        max-width: 100%;
-        width: 100%;
-        box-sizing: border-box;
-      }
+  /* 🛡️ Fix for Stripe Connect inside container */
+  #container > div {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
 
-      #loading {
-        text-align: center;
-        font-size: 5vw; /* 👈 Responsive text size */
-        padding: 40px;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-      }
+  #loading {
+    text-align: center;
+    font-size: 5vw;
+    padding: 40px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
 
-      /* 📱 Small devices fix */
-      @media (max-width: 480px) {
-        #loading {
-          font-size: 18px; /* 👈 Fixed size for very small phones */
-        }
-        #container {
-          padding: 15px;
-        }
-      }
-    </style>
-  </head>
+  /* 📱 Devices smaller than 480px */
+  @media (max-width: 480px) {
+    #loading {
+      font-size: 18px;
+    }
+    #container {
+      padding: 15px;
+    }
+  }
 
-  <body>
-    <div id="container">
-      <div id="loading">Loading payments component...</div>
-    </div>
+  /* 📱 Devices smaller than 414px (iPhone Pro) */
+  @media (max-width: 414px) {
+    #loading {
+      font-size: 16px;
+    }
+    #container {
+      padding: 10px;
+    }
+  }
 
-    <script>
-      window.StripeConnect = window.StripeConnect || {};
-
-      StripeConnect.onLoad = async () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const clientSecret = urlParams.get("secret");
-        const publishableKey = "pk_test_51QpxmvLuSJ6SZh9b6mW4vZTkGaMvBLzJvZUGcm9w8AjsjWb6eppnxguqxn8foeziwTpz0DdzOnnFWo6rRJ396HWR00HLjnhIQO"; // Replace with your key
-
-        if (!clientSecret) {
-          document.getElementById("loading").innerText = "Missing client secret.";
-          return;
-        }
-
-        const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        try {
-          const stripeConnectInstance = StripeConnect.init({
-            publishableKey,
-            fetchClientSecret: () => Promise.resolve(clientSecret),
-            appearance: {
-              variables: {
-                colorPrimary: "#186d40",
-                colorText: isDarkMode ? "#95a1ac" : "#888888",
-                borderRadius: "8px",
-                fontFamily: "Roboto, sans-serif",
-              },
-              rules: {
-                ".Tab, .Button, .Link": {
-                  color: "#186d40",
-                },
-                ".Button--primary": {
-                  backgroundColor: "#186d40",
-                  color: "#ffffff",
-                },
-                ".Input": {
-                  borderColor: "#186d40",
-                  color: isDarkMode ? "#95a1ac" : "#888888",
-                }
-              }
-            }
-          });
-
-          const payments = stripeConnectInstance.create("payments");
-
-          payments.setOnLoaderStart(() => {
-            document.getElementById("loading").style.display = "none";
-            console.log(`${event.elementTagName} is now visible`);
-          });
-
-          document.getElementById("container").appendChild(payments);
-        } catch (error) {
-          console.error("Failed to load payments:", error);
-          document.getElementById("loading").innerText = "⚠️ Failed to load payments view.";
-        }
-      };
-    </script>
-  </body>
-</html>
+  /* 📱 Devices smaller than 375px (iPhone SE / small Android) */
+  @media (max-width: 375px) {
+    #loading {
+      font-size: 14px;
+    }
+    #container {
+      padding: 8px;
+    }
+  }
+</style>
