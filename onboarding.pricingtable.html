@@ -5,7 +5,6 @@
   <title>Philantrac – Subscription Plans</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
-  <!-- Roboto font -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -31,7 +30,7 @@
     body {
       font-family: 'Roboto', sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 0;
       background-color: var(--primary-bg);
       color: var(--secondary-text);
       transition: background-color 0.3s ease, color 0.3s ease;
@@ -39,29 +38,22 @@
     }
 
     #container {
-      max-width: 600px;
-      width: 100%;
-      margin: auto;
       padding: 20px;
       background: var(--secondary-bg);
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: 20px auto;
+      width: calc(100% - 40px);
+      max-width: 900px; /* 👈 allow big width if on desktop */
+      box-sizing: border-box;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    #responsive-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    /* Let stripe-pricing-table grow naturally */
+    stripe-pricing-table {
+      display: block;
       width: 100%;
-      overflow-x: auto;
-    }
-
-    #responsive-wrapper stripe-pricing-table {
-      width: 100%;
-      max-width: 800px; /* 👈 Default max width */
-      min-width: 320px;
+      min-width: 300px; /* Just a safe minimum */
       box-sizing: border-box;
     }
 
@@ -73,33 +65,33 @@
       overflow-wrap: break-word;
     }
 
-    @media (max-width: 480px) {
-      #loading {
-        font-size: 18px;
-      }
+    @media (max-width: 600px) {
       #container {
         padding: 15px;
+        margin: 15px;
       }
-      #responsive-wrapper stripe-pricing-table {
-        max-width: 100%; /* 👈 Stretch full for very small screens */
+      #loading {
+        font-size: 18px;
       }
     }
 
     @media (max-width: 414px) {
-      #loading {
-        font-size: 16px;
-      }
       #container {
         padding: 10px;
+        margin: 10px;
+      }
+      #loading {
+        font-size: 16px;
       }
     }
 
     @media (max-width: 375px) {
-      #loading {
-        font-size: 14px;
-      }
       #container {
         padding: 8px;
+        margin: 8px;
+      }
+      #loading {
+        font-size: 14px;
       }
     }
   </style>
@@ -114,8 +106,8 @@
     window.addEventListener('load', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const customerSessionClientSecret = urlParams.get("secret");
-      const pricingTableId = "prctbl_1RDFdcLuSJ6SZh9bg0fFiALE"; // 🔥 Replace with your Pricing Table ID
-      const publishableKey = "pk_test_51QpxmvLuSJ6SZh9b6mW4vZTkGaMvBLzJvZUGcm9w8AjsjWb6eppnxguqxn8foeziwTpz0DdzOnnFWo6rRJ396HWR00HLjnhIQO"; // 🔥 Replace with your Publishable Key
+      const pricingTableId = "prctbl_1RDFdcLuSJ6SZh9bg0fFiALE"; // 🔥 Replace this
+      const publishableKey = "pk_test_51QpxmvLuSJ6SZh9b6mW4vZTkGaMvBLzJvZUGcm9w8AjsjWb6eppnxguqxn8foeziwTpz0DdzOnnFWo6rRJ396HWR00HLjnhIQO"; // 🔥 Replace this
 
       if (!customerSessionClientSecret) {
         document.getElementById("loading").innerText = "Missing customer session client secret.";
@@ -125,16 +117,12 @@
       const container = document.getElementById("container");
       container.innerHTML = '';
 
-      const responsiveWrapper = document.createElement('div');
-      responsiveWrapper.id = 'responsive-wrapper';
-
       const pricingTable = document.createElement('stripe-pricing-table');
       pricingTable.setAttribute('pricing-table-id', pricingTableId);
       pricingTable.setAttribute('publishable-key', publishableKey);
       pricingTable.setAttribute('customer-session-client-secret', customerSessionClientSecret);
 
-      responsiveWrapper.appendChild(pricingTable);
-      container.appendChild(responsiveWrapper);
+      container.appendChild(pricingTable);
     });
   </script>
 </body>
