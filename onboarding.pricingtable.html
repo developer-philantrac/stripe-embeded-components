@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Philantrac – Subscription Plans</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Stripe Pricing Table Script -->
+    <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+    <!-- Roboto font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        /* Light Mode Colors */
+        --primary: #117946;
+        --secondary: #ff8c2e;
+        --primary-text: #222222;
+        --secondary-text: #888888;
+        --primary-bg: #fafafa;
+        --secondary-bg: #ffffff;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          /* Dark Mode Colors */
+          --primary: #117946;
+          --secondary: #ff8c2e;
+          --primary-text: #ffffff;
+          --secondary-text: #95a1ac;
+          --primary-bg: #1d2428;
+          --secondary-bg: #14181b;
+        }
+      }
+
+      body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: var(--primary-bg);
+        color: var(--secondary-text);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        overflow-x: hidden;
+      }
+
+      #container {
+        max-width: 600px;
+        width: 90%;
+        margin: auto;
+        padding: 20px;
+        background: var(--secondary-bg);
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        text-align: center;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* Make sure Pricing Table stays inside container */
+      #container > stripe-pricing-table {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin-top: 20px;
+      }
+
+      #loading {
+        text-align: center;
+        font-size: 5vw;
+        padding: 40px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      @media (max-width: 480px) {
+        #loading {
+          font-size: 18px;
+        }
+        #container {
+          padding: 15px;
+        }
+      }
+
+      @media (max-width: 414px) {
+        #loading {
+          font-size: 16px;
+        }
+        #container {
+          padding: 10px;
+        }
+      }
+
+      @media (max-width: 375px) {
+        #loading {
+          font-size: 14px;
+        }
+        #container {
+          padding: 8px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="container">
+      <div id="loading">Loading plans...</div>
+    </div>
+
+    <script>
+      window.addEventListener('load', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const customerSessionClientSecret = urlParams.get("secret"); // 👈 URL param ?secret=
+        const pricingTableId = "prctbl_1RDFdcLuSJ6SZh9bg0fFiALE"; // 🔥 Replace with your Pricing Table ID
+        const publishableKey = "pk_test_51QpxmvLuSJ6SZh9b6mW4vZTkGaMvBLzJvZUGcm9w8AjsjWb6eppnxguqxn8foeziwTpz0DdzOnnFWo6rRJ396HWR00HLjnhIQO"; // 🔥 Replace with your Publishable Key
+
+        if (!customerSessionClientSecret) {
+          document.getElementById("loading").innerText = "Missing customer session client secret.";
+          return;
+        }
+
+        // Remove loading text
+        const container = document.getElementById("container");
+        container.innerHTML = '';
+
+        // Create the pricing table dynamically
+        const pricingTable = document.createElement('stripe-pricing-table');
+        pricingTable.setAttribute('pricing-table-id', pricingTableId);
+        pricingTable.setAttribute('publishable-key', publishableKey);
+        pricingTable.setAttribute('customer-session-client-secret', customerSessionClientSecret);
+
+        container.appendChild(pricingTable);
+      });
+    </script>
+  </body>
+</html>
