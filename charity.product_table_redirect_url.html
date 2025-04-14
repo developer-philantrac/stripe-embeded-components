@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thank You - Philantrac</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Roboto font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #fafafa;
+      color: #117946;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    #checkmark {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .checkmark-circle {
+      stroke: #117946;
+      stroke-width: 4;
+      fill: none;
+      animation: drawCircle 1s ease-out forwards;
+    }
+
+    .checkmark-check {
+      stroke: #117946;
+      stroke-width: 4;
+      fill: none;
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: drawCheck 1s 1s ease forwards;
+    }
+
+    @keyframes drawCircle {
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    #message {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    #countdown {
+      font-size: 18px;
+      color: #888888;
+    }
+
+    #spinner {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #117946;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="spinner"></div>
+
+  <!-- Animated Checkmark SVG -->
+  <svg id="checkmark" viewBox="0 0 52 52">
+    <circle class="checkmark-circle" cx="26" cy="26" r="25" stroke-dasharray="157" stroke-dashoffset="157"/>
+    <path class="checkmark-check" d="M14 27l7 7 17-17" stroke-dasharray="50" stroke-dashoffset="50"/>
+  </svg>
+
+  <div id="message">Finalizing your subscription, please wait...</div>
+  <div id="countdown" style="display: none;">This window will close in <span id="timer">10</span> seconds...</div>
+
+  <script>
+    window.addEventListener('load', async () => {
+      try {
+        // 🔥 Make the API call but no session_id sent
+        await fetch("https://api.philantrac.com/api:D97pdPl-/automation_for_processing_webhook_and_firestore", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        // ✅ API call made (no waiting for result)
+
+      } catch (error) {
+        console.error("Background API call failed", error);
+        // ⚠️ Silent fail - don't block user
+      }
+
+      // ✅ Always move to success animation
+      document.getElementById("spinner").style.display = "none";
+      document.getElementById("checkmark").style.display = "block";
+      document.getElementById("message").innerText = "🎉 Subscription Confirmed!\nYou can now close this window.";
+      startCountdown();
+    });
+
+    function startCountdown() {
+      let seconds = 10;
+      const countdownElement = document.getElementById("countdown");
+      const timerElement = document.getElementById("timer");
+      countdownElement.style.display = "block";
+
+      const interval = setInterval(() => {
+        seconds--;
+        timerElement.textContent = seconds;
+
+        if (seconds <= 0) {
+          clearInterval(interval);
+          try {
+            window.close();
+          } catch (e) {
+            console.error("Window close failed", e);
+          }
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
