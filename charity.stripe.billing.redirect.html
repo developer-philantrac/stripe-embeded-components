@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Philantrac – All Set</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #117946;
+      --secondary: #ff8c2e;
+      --text: #444;
+      --subtext: #888;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f7f9fc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      color: var(--text);
+    }
+
+    .checkmark {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+    }
+
+    .checkmark-circle {
+      stroke: var(--primary);
+      stroke-width: 4;
+      fill: none;
+      stroke-dasharray: 157;
+      stroke-dashoffset: 157;
+      animation: drawCircle 0.6s ease-out forwards;
+    }
+
+    .checkmark-check {
+      stroke: var(--primary);
+      stroke-width: 4;
+      fill: none;
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: drawCheck 0.4s 0.6s ease-out forwards;
+    }
+
+    @keyframes drawCircle {
+      to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--subtext);
+      margin-bottom: 30px;
+    }
+
+    #countdown {
+      font-size: 14px;
+      color: var(--subtext);
+      margin-bottom: 20px;
+    }
+
+    .button {
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 24px;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+
+    .button:hover {
+      background-color: #0e5f36;
+    }
+
+    @media (max-width: 480px) {
+      .title {
+        font-size: 20px;
+      }
+
+      .subtitle {
+        font-size: 15px;
+      }
+
+      .button {
+        width: 80%;
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Checkmark Animation -->
+  <svg class="checkmark" viewBox="0 0 52 52">
+    <circle class="checkmark-circle" cx="26" cy="26" r="25"/>
+    <path class="checkmark-check" d="M14 27l7 7 17-17"/>
+  </svg>
+
+  <div class="title">You're all set!</div>
+  <div class="subtitle">You can now return to the app.</div>
+
+  <div id="countdown">Closing in <span id="seconds">5</span> seconds...</div>
+
+  <!-- Optional Fallback Button -->
+  <a class="button" href="https://philantrac.app" target="_self">Return to App</a>
+
+  <script>
+    let secondsLeft = 5;
+
+    const updateCountdown = () => {
+      document.getElementById("seconds").textContent = secondsLeft;
+      secondsLeft--;
+
+      if (secondsLeft < 0) {
+        try {
+          window.close();
+        } catch (e) {
+          console.warn("Auto-close failed, use the button instead.");
+        }
+      }
+    };
+
+    window.onload = function () {
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    };
+  </script>
+</body>
+</html>
