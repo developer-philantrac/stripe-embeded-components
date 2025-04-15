@@ -1,119 +1,201 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Philantrac – All Set</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --primary: #117946;
-      --text: #444;
-      --subtext: #888;
-      --bg: #f7f9fc;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Roboto', sans-serif;
-      background-color: var(--bg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      color: var(--text);
-    }
-
-    .checkmark {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 20px;
-    }
-
-    .checkmark-circle {
-      stroke: var(--primary);
-      stroke-width: 4;
-      fill: none;
-      stroke-dasharray: 157;
-      stroke-dashoffset: 157;
-      animation: drawCircle 0.6s ease-out forwards;
-    }
-
-    .checkmark-check {
-      stroke: var(--primary);
-      stroke-width: 4;
-      fill: none;
-      stroke-dasharray: 50;
-      stroke-dashoffset: 50;
-      animation: drawCheck 0.4s 0.6s ease-out forwards;
-    }
-
-    @keyframes drawCircle {
-      to { stroke-dashoffset: 0; }
-    }
-
-    @keyframes drawCheck {
-      to { stroke-dashoffset: 0; }
-    }
-
-    .title {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .subtitle {
-      font-size: 16px;
-      color: var(--subtext);
-      margin-bottom: 30px;
-    }
-
-    #countdown {
-      font-size: 14px;
-      color: var(--subtext);
-    }
-
-    @media (max-width: 480px) {
-      .title { font-size: 20px; }
-      .subtitle, #countdown { font-size: 15px; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- ✅ Checkmark Animation -->
-  <svg class="checkmark" viewBox="0 0 52 52">
-    <circle class="checkmark-circle" cx="26" cy="26" r="25"/>
-    <path class="checkmark-check" d="M14 27l7 7 17-17"/>
-  </svg>
-
-  <div class="title">You're all set!</div>
-  <div class="subtitle">You can now return to the app.</div>
-
-  <div id="countdown">Closing in <span id="seconds">5</span> seconds...</div>
-
-  <script>
-    let secondsLeft = 5;
-    const updateCountdown = () => {
-      document.getElementById("seconds").textContent = secondsLeft;
-      secondsLeft--;
-
-      if (secondsLeft < 0) {
-        try {
-          window.close();
-        } catch (e) {
-          console.warn("Window close blocked.");
-        }
-      }
-    };
-
-    window.onload = function () {
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-    };
-  </script>
-</body>
-</html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <title>Thank You - Philantrac</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- Roboto font -->
+   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+   <meta charset="UTF-8" />
+   <title>Philantrac – All Set</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+   <style>
+     :root {
+       --primary: #117946;
+       --text: #444;
+       --subtext: #888;
+       --bg: #f7f9fc;
+     }
+ 
+     body {
+       margin: 0;
+       padding: 0;
+       font-family: 'Roboto', sans-serif;
+       background-color: var(--bg);
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       flex-direction: column;
+       height: 100vh;
+       background-color: #fafafa;
+       color: #117946;
+       align-items: center;
+       justify-content: center;
+       min-height: 100vh;
+       text-align: center;
+       margin: 0;
+       padding: 20px;
+       color: var(--text);
+     }
+ 
+     #checkmark {
+     .checkmark {
+       width: 80px;
+       height: 80px;
+       margin-bottom: 20px;
+       display: none;
+     }
+ 
+     .checkmark-circle {
+       stroke: #117946;
+       stroke: var(--primary);
+       stroke-width: 4;
+       fill: none;
+       animation: drawCircle 1s ease-out forwards;
+       stroke-dasharray: 157;
+       stroke-dashoffset: 157;
+       animation: drawCircle 0.6s ease-out forwards;
+     }
+ 
+     .checkmark-check {
+       stroke: #117946;
+       stroke: var(--primary);
+       stroke-width: 4;
+       fill: none;
+       stroke-dasharray: 50;
+       stroke-dashoffset: 50;
+       animation: drawCheck 1s 1s ease forwards;
+       animation: drawCheck 0.4s 0.6s ease-out forwards;
+     }
+ 
+     @keyframes drawCircle {
+ @@ -52,90 +59,61 @@
+       to { stroke-dashoffset: 0; }
+     }
+ 
+     #message {
+       font-size: 22px;
+       margin-bottom: 10px;
+     .title {
+       font-size: 24px;
+       font-weight: 600;
+       margin-bottom: 8px;
+     }
+ 
+     #countdown {
+       font-size: 18px;
+       color: #888888;
+     .subtitle {
+       font-size: 16px;
+       color: var(--subtext);
+       margin-bottom: 30px;
+     }
+ 
+     #spinner {
+       border: 5px solid #f3f3f3;
+       border-top: 5px solid #117946;
+       border-radius: 50%;
+       width: 40px;
+       height: 40px;
+       animation: spin 1s linear infinite;
+       margin-bottom: 20px;
+     #countdown {
+       font-size: 14px;
+       color: var(--subtext);
+     }
+ 
+     @keyframes spin {
+       0% { transform: rotate(0deg); }
+       100% { transform: rotate(360deg); }
+     @media (max-width: 480px) {
+       .title { font-size: 20px; }
+       .subtitle, #countdown { font-size: 15px; }
+     }
+   </style>
+ </head>
+ 
+ <body>
+   <div id="spinner"></div>
+ 
+   <!-- Animated Checkmark SVG -->
+   <svg id="checkmark" viewBox="0 0 52 52">
+     <circle class="checkmark-circle" cx="26" cy="26" r="25" stroke-dasharray="157" stroke-dashoffset="157"/>
+     <path class="checkmark-check" d="M14 27l7 7 17-17" stroke-dasharray="50" stroke-dashoffset="50"/>
+   <!-- ✅ Checkmark Animation -->
+   <svg class="checkmark" viewBox="0 0 52 52">
+     <circle class="checkmark-circle" cx="26" cy="26" r="25"/>
+     <path class="checkmark-check" d="M14 27l7 7 17-17"/>
+   </svg>
+ 
+   <div id="message">Finalizing your subscription, please wait...</div>
+   <div id="countdown" style="display: none;">This window will close in <span id="timer">5</span> seconds...</div>
+   <div class="title">You're all set!</div>
+   <div class="subtitle">You can now return to the app.</div>
+ 
+   <div id="countdown">Closing in <span id="seconds">5</span> seconds...</div>
+ 
+   <script>
+     window.addEventListener('load', async () => {
+       try {
+         // 🔥 Make the API call but no session_id sent
+         await fetch("https://api.philantrac.com/api:D97pdPl-/automation_for_processing_webhook_and_firestore", {
+           method: "POST",
+           headers: {
+             "Content-Type": "application/json"
+           }
+         });
+ 
+         // ✅ API call made (no waiting for result)
+ 
+       } catch (error) {
+         console.error("Background API call failed", error);
+         // ⚠️ Silent fail - don't block user
+     let secondsLeft = 5;
+     const updateCountdown = () => {
+       document.getElementById("seconds").textContent = secondsLeft;
+       secondsLeft--;
+ 
+       if (secondsLeft < 0) {
+         try {
+           window.close();
+         } catch (e) {
+           console.warn("Window close blocked.");
+         }
+       }
+     };
+ 
+       // ✅ Always move to success animation
+       document.getElementById("spinner").style.display = "none";
+       document.getElementById("checkmark").style.display = "block";
+       document.getElementById("message").innerText = "🎉 Subscription Confirmed!\nYou can now close this window.";
+       startCountdown();
+     });
+ 
+     function startCountdown() {
+       let seconds = 5;
+       const countdownElement = document.getElementById("countdown");
+       const timerElement = document.getElementById("timer");
+       countdownElement.style.display = "block";
+ 
+       const interval = setInterval(() => {
+         seconds--;
+         timerElement.textContent = seconds;
+ 
+         if (seconds <= 0) {
+           clearInterval(interval);
+           try {
+             window.close();
+           } catch (e) {
+             console.error("Window close failed", e);
+           }
+         }
+       }, 1000);
+     }
+     window.onload = function () {
+       updateCountdown();
+       setInterval(updateCountdown, 1000);
+     };
+   </script>
+ </body>
+ </html>
