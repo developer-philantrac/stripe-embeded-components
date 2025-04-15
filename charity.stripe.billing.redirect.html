@@ -8,23 +8,23 @@
   <style>
     :root {
       --primary: #117946;
-      --text: #444;
-      --subtext: #888;
+      --text: #333;
+      --subtext: #777;
       --bg: #f7f9fc;
     }
 
     body {
       margin: 0;
-      padding: 0;
       font-family: 'Roboto', sans-serif;
       background-color: var(--bg);
+      color: var(--text);
+      text-align: center;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       min-height: 100vh;
-      text-align: center;
-      color: var(--text);
+      padding: 20px;
     }
 
     .checkmark {
@@ -61,59 +61,51 @@
 
     .title {
       font-size: 24px;
-      font-weight: 600;
+      font-weight: bold;
       margin-bottom: 8px;
     }
 
     .subtitle {
       font-size: 16px;
       color: var(--subtext);
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     #countdown {
       font-size: 14px;
       color: var(--subtext);
     }
-
-    @media (max-width: 480px) {
-      .title { font-size: 20px; }
-      .subtitle, #countdown { font-size: 15px; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- ✅ Checkmark Animation -->
   <svg class="checkmark" viewBox="0 0 52 52">
     <circle class="checkmark-circle" cx="26" cy="26" r="25"/>
     <path class="checkmark-check" d="M14 27l7 7 17-17"/>
   </svg>
 
   <div class="title">You're all set!</div>
-  <div class="subtitle">Please close the page and return to Philantrac.</div>
-
+  <div class="subtitle">You can now return to the app.</div>
   <div id="countdown">Closing in <span id="seconds">5</span> seconds...</div>
 
   <script>
-    let secondsLeft = 5;
-    const updateCountdown = () => {
-      document.getElementById("seconds").textContent = secondsLeft;
-      secondsLeft--;
+    let seconds = 5;
+    const secondsSpan = document.getElementById('seconds');
 
-      if (secondsLeft < 0) {
+    const timer = setInterval(() => {
+      seconds--;
+      if (seconds <= 0) {
+        clearInterval(timer);
         try {
           window.close();
+          console.log('Window close attempted');
         } catch (e) {
-          console.warn("Window close blocked.");
+          console.warn('Window could not be closed automatically');
         }
+      } else {
+        secondsSpan.textContent = seconds;
       }
-    };
-
-    window.onload = function () {
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-    };
+    }, 1000);
   </script>
 </body>
 </html>
