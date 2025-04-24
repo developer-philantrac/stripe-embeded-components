@@ -90,7 +90,8 @@
       StripeConnect.onLoad = async () => {
         const urlParams = new URLSearchParams(window.location.search);
         const clientSecret = urlParams.get("secret");
-        const publishableKey = "pk_test_51QpxmvLuSJ6SZh9bRzI5rRwkxSV0QdQSo3lZdOcmeCuqJcHrKgrm0tGPJx2d9oCcptzcT0MO3YzFFiFdpknLGtjS00YIsOEmNn"; // Replace with your key
+        const response = await fetch("https://api.philantrac.com/api:bWHPdZPB/stripe_publishable_key");
+        const { publishableKey } = await response.json(); // Replace with your key
 
         if (!clientSecret) {
           document.getElementById("loading").innerText = "Missing client secret.";
