@@ -141,6 +141,7 @@
           document.getElementById("loading").innerText = "⚠️ Failed to load payments view.";
         }
       };
+      window.onload = StripeConnect.onLoad;
     </script>
   </body>
 </html>
