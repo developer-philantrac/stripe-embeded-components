@@ -107,7 +107,8 @@
       const urlParams = new URLSearchParams(window.location.search);
       const customerSessionClientSecret = urlParams.get("secret");
       const pricingTableId = "prctbl_1RDFdcLuSJ6SZh9bg0fFiALE"; // 🔥 Replace this
-      const publishableKey = "pk_test_51QpxmvLuSJ6SZh9b6mW4vZTkGaMvBLzJvZUGcm9w8AjsjWb6eppnxguqxn8foeziwTpz0DdzOnnFWo6rRJ396HWR00HLjnhIQO"; // 🔥 Replace this
+        const response = await fetch("https://api.philantrac.com/api:bWHPdZPB/stripe_publishable_key");
+        const { publishableKey } = await response.json(); // 🔥 Replace this
 
       if (!customerSessionClientSecret) {
         document.getElementById("loading").innerText = "Missing customer session client secret.";
